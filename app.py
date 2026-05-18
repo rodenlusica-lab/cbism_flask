@@ -210,7 +210,11 @@ def process_sales():
             }
 
         else:
-            return "Not enough stock"
+            return render_template(
+                "process_sales.html",
+                products=products,
+                error="Not enough Stock!"
+            )
 
     return render_template(
         "process_sales.html",

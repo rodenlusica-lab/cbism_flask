@@ -69,6 +69,13 @@
             display: block;
             font-size: 18px;
         }
+        
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -121,7 +128,11 @@
                 Quantity:
             </label>
 
-            <input type="number" name="qty" placeholder="" required>
+            <input type="number" name="qty" required> {% if error %}
+            <p class="error-message">
+                {{ error }}
+            </p>
+            {% endif %}
 
             <button type="submit">
                 Process
