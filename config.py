@@ -1,10 +1,11 @@
 import mysql.connector
 
 db = mysql.connector.connect(
-    host="localhost",
+    host="centerbeam.proxy.rlwy.net",
     user="root",
-    password="",
-    database="cbism_flask_db"
+    password="TdNzCohxzHUnHnrmXGtVyEaXrkFKwlXo",
+    database="railway",
+    port=33286
 )
 
 cursor = db.cursor(dictionary=True)
