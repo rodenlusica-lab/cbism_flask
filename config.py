@@ -1,11 +1,12 @@
 import mysql.connector
+import os
 
 db = mysql.connector.connect(
-    host="centerbeam.proxy.rlwy.net",
-    user="root",
-    password="TdNzCohxzHUnHnrmXGtVyEaXrkFKwlXo",
-    database="railway",
-    port=33286
+    host=os.getenv("MYSQLHOST"),
+    user=os.getenv("MYSQLUSER"),
+    password=os.getenv("MYSQLPASSWORD"),
+    database=os.getenv("MYSQLDATABASE"),
+    port=int(os.getenv("MYSQLPORT"))
 )
 
 cursor = db.cursor(dictionary=True)
