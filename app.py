@@ -70,7 +70,10 @@ def login():
             return redirect("/dashboard")
 
         else:
-            return "Invalid Email or Password"
+            return render_template(
+                "login.html",
+                error="Invalid email or Password"
+            )
 
     return render_template("login.html")
 
