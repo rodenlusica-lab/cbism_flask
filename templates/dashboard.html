@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CBISM Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+        
+        body {
+            background: #f4f7f6;
+        }
+        
+        nav {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        
+        .logout-btn {
+            background: #ff4d4d;
+            padding: 8px 14px;
+            border-radius: 5px;
+        }
+        
+        .container {
+            padding: 30px;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            width: 300px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .badge-active {
+            background: #28a745;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+        }
+        
+        .badge-low {
+            background: #e67e22;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav>
+
+        <div>
+            <strong>CLOUD BASED INVENTORY AND SALES MANAGEMENT SYSTEM</strong>
+        </div>
+
+        <div>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/add_product">Add Product</a>
+            <a href="/reports">Reports</a>
+            <a href="/process_sales">🛒 Process Sales</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+        <h1>Admin Dashboard</h1>
+
+        <div class="summary-card">
+            <b>Displayed:</b> {{ products|length }} |
+            <b>Total in DB:</b> {{ products|length }}
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search product...">
+        </div>
+
+        <table id="productTable">
+
+            <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for product in products %}
+
+            <tr>
+                <td>{{ product.Product_Name }}</td>
+                <td>{{ product.Category }}</td>
+                <td>{{ product.Stock_Quantity }}</td>
+                <td>₱{{ product.Unit_Price }}</td>
+                <td>
+
+                    {% if product.Stock_Quantity >= 10 %}
+                    <span class="badge-active">Active</span> {% else %}
+                    <span class="badge-low">Low Stock</span> {% endif %}
+
+                </td>
+
+                <td>
+                    <a href="/edit_product/{{ product.Product_ID }}">
+                        Edit
+                    </a> |
+                    <a href="/delete_product/{{ product.Product_ID }}">
+                        Delete
+                    </a>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <script>
+        document.getElementById("searchInput").addEventListener("keyup", function() {
+
+            let input = this.value.toLowerCase();
+
+            let rows = document.querySelectorAll("#productTable tr");
+
+            rows.forEach((row, index) => {
+
+                if (index === 0) return;
+
+                let text = row.innerText.toLowerCase();
+
+                if (text.includes(input)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

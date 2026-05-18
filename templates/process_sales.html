@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Process Sales</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f7f6;
+        }
+        
+        .container {
+            width: 450px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .back-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        
+        .receipt {
+            margin-top: 30px;
+            background: #f1f1f1;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .receipt h3 {
+            margin-bottom: 20px;
+        }
+        
+        .receipt p {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .search-label,
+        .select-label,
+        .qty-label {
+            margin-bottom: 10px;
+            display: block;
+            font-size: 18px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Process Sale</h2>
+
+        <!-- SEARCH -->
+
+        <label class="search-label">
+            Search Product:
+        </label>
+
+        <input type="text" id="searchProduct" placeholder="Type to search...">
+
+        <!-- FORM -->
+
+        <form method="POST">
+
+            <label class="select-label">
+                Select Product:
+            </label>
+
+            <select name="product_id" id="productSelect" size="8" required>
+
+                <option value="">
+                    -- Choose Product --
+                </option>
+
+                {% for product in products %}
+
+                <option value="{{ product.Product_ID }}">
+
+                    {{ product.Product_Name }}
+                    |
+                    Stock: {{ product.Stock_Quantity }}
+                    |
+                    ₱{{ product.Unit_Price }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <label class="qty-label">
+                Quantity:
+            </label>
+
+            <input type="number" name="qty" placeholder="" required>
+
+            <button type="submit">
+                Process
+            </button>
+
+        </form>
+
+        <!-- BACK -->
+
+        <a href="/dashboard" class="back-btn">
+
+            ← Back to Dashboard
+
+        </a>
+
+        <!-- RECEIPT -->
+
+        {% if receipt %}
+
+        <div class="receipt">
+
+            <h3>Sales Receipt</h3>
+
+            <p>
+                <b>Product:</b> {{ receipt.product }}
+            </p>
+
+            <p>
+                <b>Price:</b> ₱{{ receipt.price }}
+            </p>
+
+            <p>
+                <b>Qty:</b> {{ receipt.qty }}
+            </p>
+
+            <p>
+                <b>Total:</b> ₱{{ receipt.total }}
+            </p>
+
+            <p>
+                <b>Remaining Stock:</b> {{ receipt.remaining_stock }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- SEARCH SCRIPT -->
+
+    <script>
+        const searchInput =
+            document.getElementById("searchProduct");
+
+        const productSelect =
+            document.getElementById("productSelect");
+
+        const options =
+            productSelect.options;
+
+        searchInput.addEventListener("keyup", function() {
+
+            let filter =
+                searchInput.value.toLowerCase();
+
+            for (let i = 0; i < options.length; i++) {
+
+                let text =
+                    options[i].text.toLowerCase();
+
+                if (text.includes(filter)) {
+
+                    options[i].style.display = "";
+
+                } else {
+
+                    options[i].style.display = "none";
+
+                }
+
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
