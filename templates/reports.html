@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Reports</title>
+    <title>Sales Reports</title>
 
     <style>
         * {
@@ -61,9 +61,12 @@
             border-radius: 5px;
         }
         
-        .low-stock {
-            color: red;
-            font-weight: bold;
+        #searchInput {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 
@@ -73,34 +76,36 @@
 
     <div class="container">
 
-        <!-- SALES REPORT -->
-
         <h1>Sales Reports</h1>
 
         <div class="summary-card">
             <h2>Total Revenue: ₱{{ total_sales.total_sales or 0 }}</h2>
         </div>
 
-        <table>
+        <!-- Search bar -->
+        <input type="text" id="searchInput" placeholder="Search product...">
+
+        <!-- Sales table -->
+        <table id="salesTable">
             <tr>
                 <th>Product</th>
-                <th>Total Quantity Sold</th>
-                <th>Total Revenue</th>
+                <th style="text-align: right;">Total Quantity Sold</th>
+                <th style="text-align: right;">Price</th>
+                <th style="text-align: right;">Total Revenue</th>
             </tr>
 
             {% for report in reports %}
             <tr>
                 <td>{{ report.product_name }}</td>
-                <td>{{ report.total_qty }}</td>
-                <td>₱{{ report.total_revenue }}</td>
+                <td style="text-align: right;">{{ report.total_qty }}</td>
+                <td style="text-align: right;">₱{{ report.total_revenue / report.total_qty }}</td>
+                <td style="text-align: right;">₱{{ report.total_revenue }}</td>
             </tr>
             {% endfor %}
         </table>
 
-        <!-- ACTIVITY LOGS -->
-
+        <!-- Activity Logs -->
         <h1>Activity Logs</h1>
-
         <table>
             <tr>
                 <th>Action</th>
@@ -108,7 +113,6 @@
                 <th>Details</th>
                 <th>Date</th>
             </tr>
-
             {% for log in logs %}
             <tr>
                 <td>{{ log.action }}</td>
@@ -119,17 +123,14 @@
             {% endfor %}
         </table>
 
-        <!-- LOW STOCK REPORT -->
-
+        <!-- Low Stock Products -->
         <h1>Low Stock Products</h1>
-
         <table>
             <tr>
                 <th>Product</th>
                 <th>Category</th>
                 <th>Stocks</th>
             </tr>
-
             {% for item in low_products %}
             <tr>
                 <td>{{ item.Product_Name }}</td>
@@ -142,6 +143,31 @@
         <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
 
     </div>
+
+    <!-- Search functionality -->
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const table = document.getElementById("salesTable");
+        const rows = table.getElementsByTagName("tr");
+
+        searchInput.addEventListener("keyup", function() {
+            const filter = searchInput.value.toLowerCase();
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName("td");
+                let match = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].innerText.toLowerCase().includes(filter)) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = match ? "" : "none";
+            }
+        });
+    </script>
 
 </body>
 
