@@ -235,10 +235,15 @@ class Product:
     # GET SALES REPORTS
     def get_sales_reports(self):
 
-        sql="""
-        SELECT * FROM sales_records
-        ORDER BY sale_date DESC
+        sql = """
+        SELECT product_name,
+               SUM(quantity) AS total_qty,
+               SUM(total_price) AS total_revenue
+        FROM sales_records
+        GROUP BY product_name
+        ORDER BY product_name
         """
+            
 
         cursor.execute(sql)
 

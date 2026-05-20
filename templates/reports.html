@@ -78,51 +78,23 @@
         <h1>Sales Reports</h1>
 
         <div class="summary-card">
-
-            <h2>
-                Total Revenue: ₱{{ total_sales.total_sales or 0 }}
-            </h2>
-
+            <h2>Total Revenue: ₱{{ total_sales.total_sales or 0 }}</h2>
         </div>
 
         <table>
-
             <tr>
                 <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-                <th>Date</th>
+                <th>Total Quantity Sold</th>
+                <th>Total Revenue</th>
             </tr>
 
             {% for report in reports %}
-
             <tr>
-
-                <td>
-                    {{ report.product_name }}
-                </td>
-
-                <td>
-                    {{ report.quantity }}
-                </td>
-
-                <td>
-                    ₱{{ report.total_price / report.quantity }}
-                </td>
-
-                <td>
-                    ₱{{ report.total_price }}
-                </td>
-
-                <td>
-                    {{ report.sale_date }}
-                </td>
-
+                <td>{{ report.product_name }}</td>
+                <td>{{ report.total_qty }}</td>
+                <td>₱{{ report.total_revenue }}</td>
             </tr>
-
             {% endfor %}
-
         </table>
 
         <!-- ACTIVITY LOGS -->
@@ -130,7 +102,6 @@
         <h1>Activity Logs</h1>
 
         <table>
-
             <tr>
                 <th>Action</th>
                 <th>Product</th>
@@ -139,29 +110,13 @@
             </tr>
 
             {% for log in logs %}
-
             <tr>
-
-                <td>
-                    {{ log.action }}
-                </td>
-
-                <td>
-                    {{ log.product_name }}
-                </td>
-
-                <td>
-                    {{ log.details }}
-                </td>
-
-                <td>
-                    {{ log.created_at }}
-                </td>
-
+                <td>{{ log.action }}</td>
+                <td>{{ log.product_name }}</td>
+                <td>{{ log.details }}</td>
+                <td>{{ log.created_at }}</td>
             </tr>
-
             {% endfor %}
-
         </table>
 
         <!-- LOW STOCK REPORT -->
@@ -169,7 +124,6 @@
         <h1>Low Stock Products</h1>
 
         <table>
-
             <tr>
                 <th>Product</th>
                 <th>Category</th>
@@ -177,30 +131,15 @@
             </tr>
 
             {% for item in low_products %}
-
             <tr>
-
-                <td>
-                    {{ item.Product_Name }}
-                </td>
-
-                <td>
-                    {{ item.Category }}
-                </td>
-
-                <td class="low-stock">
-                    {{ item.Stock_Quantity }}
-                </td>
-
+                <td>{{ item.Product_Name }}</td>
+                <td>{{ item.Category }}</td>
+                <td class="low-stock">{{ item.Stock_Quantity }}</td>
             </tr>
-
             {% endfor %}
-
         </table>
 
-        <a href="/dashboard" class="back-btn">
-            ← Back to Dashboard
-        </a>
+        <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
 
     </div>
 
