@@ -97,18 +97,20 @@
             padding: 6px 12px;
             border-radius: 5px;
         }
+        
+        .delete-disabled {
+            color: gray;
+            cursor: not-allowed;
+        }
     </style>
-
 </head>
 
 <body>
 
     <nav>
-
         <div>
             <strong>CLOUD BASED INVENTORY AND SALES MANAGEMENT SYSTEM</strong>
         </div>
-
         <div>
             <a href="/dashboard">Dashboard</a>
             <a href="/add_product">Add Product</a>
@@ -116,7 +118,6 @@
             <a href="/process_sales">🛒 Process Sales</a>
             <a href="/logout" class="logout-btn">Logout</a>
         </div>
-
     </nav>
 
     <div class="container">
@@ -134,69 +135,47 @@
         </div>
 
         <table id="productTable">
-
             <tr>
-                <th>Product</th>
-                <th>Category</th>
-                <th>Stock</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th style="text-align:left;">Product</th>
+                <th style="text-align:left;">Category</th>
+                <th style="text-align:right;">Stock</th>
+                <th style="text-align:right;">Price</th>
+                <th style="text-align:center;">Status</th>
+                <th style="text-align:center;">Action</th>
             </tr>
 
             {% for product in products %}
-
             <tr>
-                <td>{{ product.Product_Name }}</td>
-                <td>{{ product.Category }}</td>
-                <td>{{ product.Stock_Quantity }}</td>
-                <td>₱{{ product.Unit_Price }}</td>
-                <td>
-
+                <td style="text-align:left;">{{ product.Product_Name }}</td>
+                <td style="text-align:left;">{{ product.Category }}</td>
+                <td style="text-align:right;">{{ product.Stock_Quantity }}</td>
+                <td style="text-align:right;">₱{{ product.Unit_Price }}</td>
+                <td style="text-align:center;">
                     {% if product.Stock_Quantity >= 10 %}
                     <span class="badge-active">Active</span> {% else %}
                     <span class="badge-low">Low Stock</span> {% endif %}
-
                 </td>
-
-                <td>
-                    <a href="/edit_product/{{ product.Product_ID }}">
-                        Edit
-                    </a> |
-                    <a href="/delete_product/{{ product.Product_ID }}">
-                        Delete
-                    </a>
+                <td style="text-align:center;">
+                    <a href="/edit_product/{{ product.Product_ID }}">Edit</a> | {% if product.Stock_Quantity == 0 %}
+                    <a href="/delete_product/{{ product.Product_ID }}">Delete</a> {% else %}
+                    <span class="delete-disabled">Delete</span> {% endif %}
                 </td>
-
             </tr>
-
             {% endfor %}
-
         </table>
 
     </div>
 
     <script>
+        // SEARCH FUNCTIONALITY
         document.getElementById("searchInput").addEventListener("keyup", function() {
-
             let input = this.value.toLowerCase();
-
             let rows = document.querySelectorAll("#productTable tr");
-
             rows.forEach((row, index) => {
-
-                if (index === 0) return;
-
+                if (index === 0) return; // skip header
                 let text = row.innerText.toLowerCase();
-
-                if (text.includes(input)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-
+                row.style.display = text.includes(input) ? "" : "none";
             });
-
         });
     </script>
 
